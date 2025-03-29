@@ -6,10 +6,13 @@ import authRoutes from "./routes/auth.routes.js";
 import CompanyPackageRoutes from "./routes/companyPackage.routes.js";
 import packageCategoryRoutes from "./routes/packageCategory.routes.js";
 import packageRoutes from "./routes/package.routes.js";
+import path from "path";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -20,6 +23,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/auth/company-packages",CompanyPackageRoutes);
 app.use("/api/auth",packageCategoryRoutes);
 app.use("/api/auth/packages",packageRoutes);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
 connectDB().then(() => {
     app.listen(PORT, () => {

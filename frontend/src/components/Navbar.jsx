@@ -21,20 +21,20 @@ const Navbar = () => {
     <nav className="bg-gradient-to-r from-blue-500 to-blue-700 border-b border-blue-800">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo on the Left */}
-        <NavLink to="/" className="text-2xl font-bold text-white">
+        <div className="flex">
+        <img
+          src="/Logo.png" // <- Update this to your actual logo path
+          alt="Cura Logo"
+          className="h-12 w-12 object-contain"
+        />
+        <NavLink to="/" className="text-4xl font-bold text-white mt-1 ml-1">
           Cura
         </NavLink>
+        </div>
 
         {/* Navbar Links on the Right */}
         <div className="flex items-center space-x-6">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `font-medium text-lg ${isActive ? "text-blue-200" : "text-white hover:text-blue-200"}`
-            }
-          >
-            Home
-          </NavLink>
+          
 
           {!isAuthenticated ? (
             <>
@@ -57,7 +57,18 @@ const Navbar = () => {
               </NavLink>
             </>
           ) : (
+            <>
+            <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `font-medium text-lg ${isActive ? "text-blue-200" : "text-white hover:text-blue-200"}`
+            }
+          >
+            Home
+          </NavLink>
             <LogoutButton />
+            </>
+            
           )}
         </div>
       </div>

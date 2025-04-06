@@ -4,9 +4,16 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-blue-500 to-blue-700 border-t border-blue-800 text-white py-6 mt-auto">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
-        {/* Company Branding */}
+        
         <div className="mb-4 md:mb-0">
-          <h5 className="text-2xl mb-3 font-bold">Cura</h5>
+          <div className="flex">
+          <img
+          src="/Logo.png" 
+          alt="Cura Logo"
+          className="h-12 w-12 object-contain"
+        />
+          <h5 className="text-4xl mb-3 font-bold mt-1 ml-1">Cura</h5>
+          </div>
           <p className="text-sm">
             Building innovative solutions for a better future. Stay connected for updates and offers.
           </p>

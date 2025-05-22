@@ -34,3 +34,34 @@ export const createPackage = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+export const searchResults = async (req, res) => {
+  try {
+    let { q, page = 1, limit = 20 } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.status(400).json({ error: "Search query is required" });
+    }
+
+    q = q.trim();
+
+    const searchRegex = new RegExp(q, "i");
+
+    const matchedPackages = await Package.find({
+      $or: [
+        { name: { $regex: searchRegex } },
+        { tests: { $regex: searchRegex } }
+      ]
+    })
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .populate("packageCategory");
+
+    res.status(200).json(matchedPackages);
+  } catch (error) {
+    console.error("Error in searchResults controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+

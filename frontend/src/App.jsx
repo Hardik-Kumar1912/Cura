@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider , Navigate } from "react-router-dom
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './context/AuthContext';
 import CompanyHome from './pages/companyHome/CompanyHome.jsx';
+import SearchResults from './pages/searchResults/SearchResults.jsx';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,15 @@ const router = createBrowserRouter([
         <Navbar />
         <CompanyHome />
         <Footer />
+      </div>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <div>
+        <Navbar />
+        <SearchResults />
       </div>
     ),
   }

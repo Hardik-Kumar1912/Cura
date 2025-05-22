@@ -20,7 +20,6 @@ const packageSchema = new mongoose.Schema({
     packageCategory: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "PackageCategory", 
-        required: true
     }
 },{timestamps : true});
 

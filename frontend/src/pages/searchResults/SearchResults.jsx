@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import PackageCard from "../../components/PackageCard";
+import TestCard from "../../components/TestCard";
 
 const styles = {
   container: {
@@ -34,15 +35,6 @@ const styles = {
     textAlign: "center",
     marginTop: "2rem",
   },
-  filterContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    marginBottom: "1.5rem",
-    flexWrap: "wrap",
-    gap: "0.5rem",
-    padding: "0 1rem",
-  },
   select: {
     padding: "0.6rem 0.9rem",
     fontSize: "1rem",
@@ -58,10 +50,12 @@ const SearchResults = () => {
   const queryParams = new URLSearchParams(location.search);
   const searchTerm = queryParams.get("query") || "";
 
-  const [results, setResults] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState("none");
+  const [testSortOption, setTestSortOption] = useState("none");
 
   useEffect(() => {
     if (!searchTerm) return;
@@ -75,16 +69,13 @@ const SearchResults = () => {
         return res.json();
       })
       .then((data) => {
-        if (Array.isArray(data)) {
-          setResults(data);
-        } else {
-          setResults([]);
-          console.warn("API did not return an array:", data);
-        }
+        setPackages(Array.isArray(data.packages) ? data.packages : []);
+        setTests(Array.isArray(data.tests) ? data.tests : []);
       })
       .catch((err) => {
         setError(err.message);
-        setResults([]);
+        setPackages([]);
+        setTests([]);
       })
       .finally(() => setLoading(false));
   }, [searchTerm]);
@@ -93,8 +84,12 @@ const SearchResults = () => {
     setSortOption(e.target.value);
   };
 
-  const getSortedResults = () => {
-    let sorted = [...results];
+  const handleTestSortChange = (e) => {
+    setTestSortOption(e.target.value);
+  };
+
+  const getSortedPackages = () => {
+    let sorted = [...packages];
     if (sortOption === "priceLowToHigh") {
       sorted.sort((a, b) => a.bestPrice - b.bestPrice);
     } else if (sortOption === "priceHighToLow") {
@@ -105,7 +100,20 @@ const SearchResults = () => {
     return sorted;
   };
 
-  const sortedResults = getSortedResults();
+  const getSortedTests = () => {
+    let sorted = [...tests];
+    if (testSortOption === "priceLowToHigh") {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (testSortOption === "priceHighToLow") {
+      sorted.sort((a, b) => b.price - a.price);
+    } else if (testSortOption === "alphabetical") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return sorted;
+  };
+
+  const sortedPackages = getSortedPackages();
+  const sortedTests = getSortedTests();
 
   return (
     <div style={styles.container}>
@@ -113,38 +121,82 @@ const SearchResults = () => {
         Search results for: <span style={{ color: "#2980b9" }}>"{searchTerm}"</span>
       </h2>
 
-      {results.length > 0 && (
-        <div style={styles.filterContainer}>
-          <select value={sortOption} onChange={handleSortChange} style={styles.select}>
-            <option value="none">Sort By</option>
-            <option value="priceLowToHigh">Price: Low to High</option>
-            <option value="priceHighToLow">Price: High to Low</option>
-            <option value="popularity">Popularity</option>
-          </select>
-        </div>
-      )}
-
       {loading ? (
         <p style={styles.loading}>Loading...</p>
       ) : error ? (
         <p style={styles.error}>Error: {error}</p>
-      ) : sortedResults.length === 0 ? (
+      ) : packages.length === 0 && tests.length === 0 ? (
         <p style={styles.message}>
-          No packages/tests found for "{searchTerm}". Please try another search term.
+          No packages or tests found for "{searchTerm}". Please try another search term.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {sortedResults.map((pkg) => (
-            <PackageCard
-              key={pkg._id}
-              packageId={pkg._id}
-              packageName={pkg.name}
-              testCount={pkg.noOfTests}
-              tests={pkg.tests}
-              bestPrice={pkg.bestPrice}
-            />
-          ))}
-        </div>
+        <>
+          {sortedPackages.length > 0 && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "1rem 0",
+                }}
+              >
+                <h3 style={{ fontSize: "1.5rem", color: "#27ae60" }}>Packages</h3>
+                <select value={sortOption} onChange={handleSortChange} style={styles.select}>
+                  <option value="none">Sort By</option>
+                  <option value="priceLowToHigh">Price: Low to High</option>
+                  <option value="priceHighToLow">Price: High to Low</option>
+                  <option value="popularity">Popularity</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {sortedPackages.map((pkg) => (
+                  <PackageCard
+                    key={pkg._id}
+                    packageId={pkg._id}
+                    packageName={pkg.name}
+                    testCount={pkg.noOfTests}
+                    tests={pkg.tests}
+                    bestPrice={pkg.bestPrice}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
+          {sortedTests.length > 0 && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "2rem 0 1rem",
+                }}
+              >
+                <h3 style={{ fontSize: "1.5rem", color: "#8e44ad" }}>Tests</h3>
+                <select value={testSortOption} onChange={handleTestSortChange} style={styles.select}>
+                  <option value="none">Sort By</option>
+                  <option value="priceLowToHigh">Price: Low to High</option>
+                  <option value="priceHighToLow">Price: High to Low</option>
+                  <option value="alphabetical">Alphabetical (A-Z)</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {sortedTests.map((test) => (
+                  <TestCard
+                    key={test._id}
+                    packageId={test._id}
+                    packageName={test.name}
+                    testCount={test.noOfTests}
+                    tests={test.tests}
+                    bestPrice={test.price}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );

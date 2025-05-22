@@ -25,7 +25,6 @@ const companyPackageSchema = new mongoose.Schema({
     packageCategory: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "PackageCategory",  // Reference to the PackageCategory model
-        required: true
     }
 },{timestamps : true});
 

@@ -1,4 +1,5 @@
 import Package from "../models/package.model.js";
+import Test from "../models/test.model.js";
 
 export const getAllPackages = async (req, res) => {
     try {
@@ -44,9 +45,9 @@ export const searchResults = async (req, res) => {
     }
 
     q = q.trim();
-
     const searchRegex = new RegExp(q, "i");
 
+    // Search in Package
     const matchedPackages = await Package.find({
       $or: [
         { name: { $regex: searchRegex } },
@@ -57,11 +58,23 @@ export const searchResults = async (req, res) => {
       .limit(Number(limit))
       .populate("packageCategory");
 
-    res.status(200).json(matchedPackages);
+    // Search in Test
+    const matchedTests = await Test.find({
+      $or: [
+        { name: { $regex: searchRegex } },
+        { tests: { $regex: searchRegex } },
+        { category: { $regex: searchRegex } }
+      ]
+    })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.status(200).json({ packages: matchedPackages, tests: matchedTests });
   } catch (error) {
     console.error("Error in searchResults controller:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 

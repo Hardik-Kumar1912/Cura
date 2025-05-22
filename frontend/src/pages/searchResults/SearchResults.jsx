@@ -69,7 +69,7 @@ const SearchResults = () => {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:5000/api/auth/packages/search?q=${encodeURIComponent(searchTerm)}`)
+    fetch(`/api/auth/packages/search?q=${encodeURIComponent(searchTerm)}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.json();

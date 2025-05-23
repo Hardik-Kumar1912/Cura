@@ -334,7 +334,9 @@ const Home = () => {
           packages.map((pkg) => (
             <div key={pkg._id} className="snap-center shrink-0 min-w-[85%]">
               <PackageCard
+                key={pkg._id}
                 packageId={pkg._id}
+                companyId={pkg.companyId}
                 packageName={pkg.name}
                 testCount={pkg.noOfTests}
                 tests={pkg.tests}
@@ -349,6 +351,7 @@ const Home = () => {
               <PackageCard
                 key={pkg._id}
                 packageId={pkg._id}
+                companyId={pkg.companyId}
                 packageName={pkg.name}
                 testCount={pkg.noOfTests}
                 tests={pkg.tests}

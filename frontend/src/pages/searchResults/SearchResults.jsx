@@ -3,48 +3,6 @@ import { useLocation } from "react-router-dom";
 import PackageCard from "../../components/PackageCard";
 import TestCard from "../../components/TestCard";
 
-const styles = {
-  container: {
-    maxWidth: "1200px",
-    margin: "2rem auto",
-    padding: "0 1rem",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-  },
-  heading: {
-    fontSize: "2rem",
-    fontWeight: "700",
-    marginBottom: "1rem",
-    color: "#2c3e50",
-    textAlign: "center",
-  },
-  message: {
-    fontSize: "1.1rem",
-    color: "#7f8c8d",
-    textAlign: "center",
-    marginTop: "2rem",
-  },
-  error: {
-    color: "#e74c3c",
-    fontWeight: "600",
-    textAlign: "center",
-    marginTop: "2rem",
-  },
-  loading: {
-    fontSize: "1.2rem",
-    color: "#3498db",
-    textAlign: "center",
-    marginTop: "2rem",
-  },
-  select: {
-    padding: "0.6rem 0.9rem",
-    fontSize: "1rem",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    cursor: "pointer",
-    minWidth: "200px",
-  },
-};
-
 const SearchResults = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -116,40 +74,37 @@ const SearchResults = () => {
   const sortedTests = getSortedTests();
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>
-        Search results for: <span style={{ color: "#2980b9" }}>"{searchTerm}"</span>
+    <div className="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-2">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#2c3e50] mt-14 mb-6">
+        Search results for: <span className="text-[#2980b9]">"{searchTerm}"</span>
       </h2>
 
       {loading ? (
-        <p style={styles.loading}>Loading...</p>
+        <p className="text-lg text-blue-500 text-center mt-10">Loading...</p>
       ) : error ? (
-        <p style={styles.error}>Error: {error}</p>
+        <p className="text-red-600 font-semibold text-center mt-10">Error: {error}</p>
       ) : packages.length === 0 && tests.length === 0 ? (
-        <p style={styles.message}>
+        <p className="text-gray-600 text-center mt-10">
           No packages or tests found for "{searchTerm}". Please try another search term.
         </p>
       ) : (
         <>
           {sortedPackages.length > 0 && (
             <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  margin: "1rem 0",
-                }}
-              >
-                <h3 style={{ fontSize: "1.5rem", color: "#27ae60" }}>Packages</h3>
-                <select value={sortOption} onChange={handleSortChange} style={styles.select}>
+              <div className="flex justify-between items-center mt-14 mb-6 gap-4">
+                <h3 className="text-3xl font-semibold text-[#27ae60] pl-1">Packages</h3>
+                <select
+                  value={sortOption}
+                  onChange={handleSortChange}
+                  className="px-4 py-2 text-base border border-gray-300 rounded-md shadow-sm"
+                >
                   <option value="none">Sort By</option>
                   <option value="priceLowToHigh">Price: Low to High</option>
                   <option value="priceHighToLow">Price: High to Low</option>
                   <option value="popularity">Popularity</option>
                 </select>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10">
                 {sortedPackages.map((pkg) => (
                   <PackageCard
                     key={pkg._id}
@@ -166,23 +121,20 @@ const SearchResults = () => {
 
           {sortedTests.length > 0 && (
             <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  margin: "2rem 0 1rem",
-                }}
-              >
-                <h3 style={{ fontSize: "1.5rem", color: "#8e44ad" }}>Tests</h3>
-                <select value={testSortOption} onChange={handleTestSortChange} style={styles.select}>
+              <div className="flex justify-between items-center mt-14 mb-6 gap-4">
+                <h3 className="text-3xl font-semibold text-[#8e44ad]">Tests</h3>
+                <select
+                  value={testSortOption}
+                  onChange={handleTestSortChange}
+                  className="px-4 py-2 text-base border border-gray-300 rounded-md shadow-sm"
+                >
                   <option value="none">Sort By</option>
                   <option value="priceLowToHigh">Price: Low to High</option>
                   <option value="priceHighToLow">Price: High to Low</option>
                   <option value="alphabetical">Alphabetical (A-Z)</option>
                 </select>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10">
                 {sortedTests.map((test) => (
                   <TestCard
                     key={test._id}

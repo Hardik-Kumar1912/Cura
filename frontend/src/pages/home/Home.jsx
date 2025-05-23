@@ -64,8 +64,8 @@ const Home = () => {
   ];
 
   const slides = [
-    { id: 1, src: "/New Crousal.jpg", alt: "1" },
-    { id: 2, src: "/crousal2.jpg", alt: "2" },
+    { id: 1, src: "/4.png", alt: "4" },
+    { id: 2, src: "/3.jpg", alt: "3" },
   ];
 
   useEffect(() => {
@@ -149,7 +149,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className={`bg-white min-h-screen ${!isMobile ? 'mt-14' : ''}`}>
       {/* Carousel Section */}
       <div className="relative w-full h-[180px] sm:h-[260px] md:h-[300px]">
         <div className="relative w-full h-full overflow-hidden">
@@ -167,7 +167,7 @@ const Home = () => {
                 <img
                   src={slide.src}
                   alt={slide.alt}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain px-4"
                 />
               </div>
             ))}
@@ -176,11 +176,11 @@ const Home = () => {
       </div>
 
       {/* Coloured Line */}
-      <div className="w-full h-2 bg-gradient-to-r from-green-400 to-orange-400" />
+      {/* <div className="w-full h-2 bg-gradient-to-r from-green-400 to-orange-400" /> */}
 
         {/* Search Bar */}
-<div className="w-full sm:w-[90%] md:w-[75%] lg:w-[60%] xl:w-[50%] mx-auto px-4">
-  <div className="py-11 md:py-20 bg-white">
+<div className="w-full sm:w-[90%] md:w-[75%] lg:w-[60%] xl:w-[50%] mx-auto px-4 mt-3">
+  <div className="py-6 md:py-10 bg-white">
     <div className="relative search-dropdown">
       <div className="bg-white p-4 rounded-xl shadow-md">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-0">

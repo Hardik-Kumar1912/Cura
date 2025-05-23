@@ -14,6 +14,13 @@ const Comparison = () => {
         const response = await fetch(
           `/api/auth/company-packages/by-package-id/${packageId}` 
         ); 
+
+        if(response.status === 404) {
+          throw new Error("Package not found");
+          setCompanies([]);
+          return;
+       }
+
         if (!response.ok) {
           throw new Error("Failed to fetch company data");
         }

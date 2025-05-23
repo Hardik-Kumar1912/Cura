@@ -18,8 +18,12 @@ const packageSchema = new mongoose.Schema({
         required:true
     },
     packageCategory: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "PackageCategory", 
+        type: String,
+        required: true, 
+    },
+    companyId: {
+        type: "String",
+        required: true,
     }
 },{timestamps : true});
 

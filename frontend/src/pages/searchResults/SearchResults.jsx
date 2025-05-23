@@ -78,6 +78,7 @@ const SearchResults = () => {
       <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#2c3e50] mt-14 mb-6">
         Search results for: <span className="text-[#2980b9]">"{searchTerm}"</span>
       </h2>
+      
 
       {loading ? (
         <p className="text-lg text-blue-500 text-center mt-10">Loading...</p>
@@ -105,16 +106,20 @@ const SearchResults = () => {
                 </select>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10">
-                {sortedPackages.map((pkg) => (
-                  <PackageCard
-                    key={pkg._id}
-                    packageId={pkg._id}
-                    packageName={pkg.name}
-                    testCount={pkg.noOfTests}
-                    tests={pkg.tests}
-                    bestPrice={pkg.bestPrice}
-                  />
-                ))}
+                {sortedPackages.map((pkg) => {
+  console.log(pkg.companyId); // This will work now
+  return (
+    <PackageCard
+      key={pkg._id}
+      packageId={pkg._id}
+      companyId={pkg.companyId}
+      packageName={pkg.name}
+      testCount={pkg.noOfTests}
+      tests={pkg.tests}
+      bestPrice={pkg.bestPrice}
+    />
+  );
+})}
               </div>
             </>
           )}
@@ -139,6 +144,7 @@ const SearchResults = () => {
                   <TestCard
                     key={test._id}
                     packageId={test._id}
+                    companyId={test.companyId}
                     packageName={test.name}
                     testCount={test.noOfTests}
                     tests={test.tests}

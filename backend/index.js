@@ -6,10 +6,9 @@ import authRoutes from "./routes/auth.routes.js";
 import CompanyPackageRoutes from "./routes/companyPackage.routes.js";
 import packageCategoryRoutes from "./routes/packageCategory.routes.js";
 import packageRoutes from "./routes/package.routes.js";
+import transactionRoutes from "./routes/transaction.routes.js";
 import path from "path";
 import cors from "cors";
-
-// Allow all origins (development only, not recommended for production)
 
 
 dotenv.config();
@@ -29,6 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/auth/company-packages",CompanyPackageRoutes);
 app.use("/api/auth",packageCategoryRoutes);
 app.use("/api/auth/packages",packageRoutes);
+app.use("/api/auth", transactionRoutes);
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 

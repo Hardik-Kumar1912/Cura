@@ -1,18 +1,42 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const TestCard = ({ packageId, packageName, testCount, tests, bestPrice }) => {
+const TestCard = ({ packageId, companyId ,packageName, testCount, tests, bestPrice }) => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("medi-user");
 
   function handleClick() {
-    if (authToken) navigate(`/comparison/${packageId}`);
-    else {
-      navigate("/login");
-      toast("Please login/signup to compare packages");
-    }
+  if (authToken) {
+    const companyIdStr = companyId.toString();
+    const testName = packageName;
+    const price = bestPrice.toString();
+
+    fetch("/api/auth/transactions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ companyId: companyIdStr, testName, price }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to create transaction");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        toast.success("Test booked successfully!");
+      })
+      .catch((err) => {
+        console.error("Booking failed:", err);
+        toast.error("Something went wrong while booking");
+      });
+  } else {
+    navigate("/login");
+    toast("Please login/signup to book tests");
   }
+}
+
 
   return (
     <div
@@ -56,7 +80,7 @@ const TestCard = ({ packageId, packageName, testCount, tests, bestPrice }) => {
             color: "#FAF0E6",
           }}
         >
-          Compare Prices
+          Book
         </button>
       </div>
     </div>

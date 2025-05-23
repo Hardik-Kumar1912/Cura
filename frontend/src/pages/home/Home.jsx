@@ -306,8 +306,6 @@ const Home = () => {
 </div>
 
 
-
-      {/* Full Body Comparison Section */}
       {/* Full Body Comparison Section */}
 <div className="bg-white py-4 flex flex-col items-center">
   <h2 className="text-center text-2xl sm:text-3xl font-bold text-[#333] mt-4 mb-10">

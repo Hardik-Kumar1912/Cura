@@ -5,6 +5,10 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    customerId: {
+        type: String,
+        required: true,
+    },
     price: {
         type: String,
         required: true,

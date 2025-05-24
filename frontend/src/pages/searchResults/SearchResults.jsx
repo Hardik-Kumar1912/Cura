@@ -76,24 +76,29 @@ const SearchResults = () => {
   return (
     <div className="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-2">
       <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#2c3e50] mt-14 mb-6">
-        Search results for: <span className="text-[#2980b9]">"{searchTerm}"</span>
+        Search results for:{" "}
+        <span className="text-[#2980b9]">"{searchTerm}"</span>
       </h2>
-      
 
       {loading ? (
         <p className="text-lg text-blue-500 text-center mt-10">Loading...</p>
       ) : error ? (
-        <p className="text-red-600 font-semibold text-center mt-10">Error: {error}</p>
+        <p className="text-red-600 font-semibold text-center mt-10">
+          Error: {error}
+        </p>
       ) : packages.length === 0 && tests.length === 0 ? (
         <p className="text-gray-600 text-center mt-10">
-          No packages or tests found for "{searchTerm}". Please try another search term.
+          No packages or tests found for "{searchTerm}". Please try another
+          search term.
         </p>
       ) : (
         <>
           {sortedPackages.length > 0 && (
             <>
               <div className="flex justify-between items-center mt-14 mb-6 gap-4">
-                <h3 className="text-3xl font-semibold text-[#27ae60] pl-1">Packages</h3>
+                <h3 className="text-3xl font-semibold text-[#27ae60] pl-1">
+                  Packages
+                </h3>
                 <select
                   value={sortOption}
                   onChange={handleSortChange}
@@ -107,19 +112,18 @@ const SearchResults = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10">
                 {sortedPackages.map((pkg) => {
-  console.log(pkg.companyId); // This will work now
-  return (
-    <PackageCard
-      key={pkg._id}
-      packageId={pkg._id}
-      companyId={pkg.companyId}
-      packageName={pkg.name}
-      testCount={pkg.noOfTests}
-      tests={pkg.tests}
-      bestPrice={pkg.bestPrice}
-    />
-  );
-})}
+                  return (
+                    <PackageCard
+                      key={pkg._id}
+                      packageId={pkg._id}
+                      companyId={pkg.companyId}
+                      packageName={pkg.name}
+                      testCount={pkg.noOfTests}
+                      tests={pkg.tests}
+                      bestPrice={pkg.bestPrice}
+                    />
+                  );
+                })}
               </div>
             </>
           )}

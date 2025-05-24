@@ -12,13 +12,14 @@ const TestCard = ({ packageId, companyId, packageName, testCount, tests, bestPri
     const companyIdStr = companyId.toString();
     const testName = packageName;
     const price = bestPrice.toString();
+    const userId = JSON.parse(authToken)._id;
 
     fetch("/api/auth/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ companyId: companyIdStr, testName, price }),
+      body: JSON.stringify({ companyId: companyIdStr, testName, price , customerId: userId }),
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to create transaction");

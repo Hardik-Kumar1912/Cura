@@ -6,8 +6,6 @@ export const getCompanyPackagesByPackageId = async (req, res) => {
     try {
         let { packageId } = req.params;
 
-        console.log("Package ID:", packageId);
-
         const companyPackages = await CompanyPackage.find({ package: packageId })
             .populate("package") 
             .populate("packageCategory"); 

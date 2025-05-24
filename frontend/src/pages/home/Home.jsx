@@ -341,6 +341,7 @@ const Home = () => {
                 testCount={pkg.noOfTests}
                 tests={pkg.tests}
                 bestPrice={pkg.bestPrice}
+                category={pkg.packageCategory}
               />
             </div>
           ))
@@ -356,6 +357,7 @@ const Home = () => {
                 testCount={pkg.noOfTests}
                 tests={pkg.tests}
                 bestPrice={pkg.bestPrice}
+                category={pkg.packageCategory}
               />
             ))
         )

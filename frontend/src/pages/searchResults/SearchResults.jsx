@@ -121,6 +121,7 @@ const SearchResults = () => {
                       testCount={pkg.noOfTests}
                       tests={pkg.tests}
                       bestPrice={pkg.bestPrice}
+                      category={pkg.packageCategory}
                     />
                   );
                 })}
@@ -153,6 +154,7 @@ const SearchResults = () => {
                     testCount={test.noOfTests}
                     tests={test.tests}
                     bestPrice={test.price}
+                    category={test.category}
                   />
                 ))}
               </div>

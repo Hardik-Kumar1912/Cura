@@ -16,7 +16,11 @@ const transactionSchema = new mongoose.Schema({
     testName: {
         type: String,
         required: true,
-    }
+    },
+    category: {
+        type: String,
+        required: true,
+    },
 },{timestamps: true});
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

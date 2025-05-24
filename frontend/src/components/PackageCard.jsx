@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import ConfirmModal from "./ConfirmModal"; // Adjust the path if necessary
 
-const PackageCard = ({ packageId, companyId, packageName, testCount, tests, bestPrice }) => {
+const PackageCard = ({ packageId, companyId, packageName, testCount, tests, bestPrice ,category }) => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("medi-user");
 
@@ -20,13 +20,14 @@ const PackageCard = ({ packageId, companyId, packageName, testCount, tests, best
     const testName = packageName;
     const price = bestPrice.toString();
     const userId = JSON.parse(authToken)._id;
+    const categoryStr = category.toString();
 
     fetch("/api/auth/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ companyId: companyIdStr, testName, price , customerId: userId }),
+      body: JSON.stringify({ companyId: companyIdStr, testName, price , customerId: userId , category: categoryStr }),
     })
       .then((res) => {
         if (!res.ok) {

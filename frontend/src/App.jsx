@@ -9,6 +9,7 @@ import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './context/AuthContext';
 import CompanyHome from './pages/companyHome/CompanyHome.jsx';
 import SearchResults from './pages/searchResults/SearchResults.jsx';
+import Orders from './pages/myOrders/Orders.jsx';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,16 @@ const router = createBrowserRouter([
       <div>
         <Navbar />
         <Comparison />
+        <Footer />
+      </div>
+    ),
+  },
+  {
+    path: "/myOrders/:customerId",
+    element: (
+      <div>
+        <Navbar />
+        <Orders />
         <Footer />
       </div>
     ),

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import ConfirmModal from "./ConfirmModal"; // Adjust the path if necessary
+import ConfirmModal from "./ConfirmModal";
 
 const PackageCard = ({ packageId, companyId, packageName, testCount, tests, bestPrice ,category }) => {
   const navigate = useNavigate();
@@ -9,11 +9,29 @@ const PackageCard = ({ packageId, companyId, packageName, testCount, tests, best
 
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [companyName, setCompanyName] = useState("");
   const charLimit = 120;
 
   const displayedTests = expanded
     ? tests
     : tests.slice(0, charLimit) + (tests.length > charLimit ? "..." : "");
+
+    useEffect(() => {
+  if (!companyId) return;
+
+  fetch(`/api/auth/companyName/${companyId}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch company name");
+      return res.json();
+    })
+    .then((data) => {
+      setCompanyName(data.companyName || "Unknown Company");
+    })
+    .catch((err) => {
+      console.error("Error fetching company name:", err);
+      setCompanyName("Unknown Company");
+    });
+}, [companyId]);
 
   function handleBooking() {
     const companyIdStr = companyId.toString();
@@ -65,6 +83,12 @@ const PackageCard = ({ packageId, companyId, packageName, testCount, tests, best
         <h2 className="text-lg font-semibold break-words" style={{ color: "#333" }}>
           {packageName}
         </h2>
+
+        <br />
+
+        <h3 className="text-lg font-semibold break-words" style={{ color: "red" }}>
+          {companyName}
+        </h3>
 
         <div
           className="px-3 py-1 mt-10 rounded-md inline-block font-medium text-sm"

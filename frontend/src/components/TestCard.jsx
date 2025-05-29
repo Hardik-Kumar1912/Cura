@@ -1,12 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import ConfirmModal from "./ConfirmModal"; // Adjust the path if needed
 
 const TestCard = ({ packageId, companyId, packageName, testCount, tests, bestPrice , category }) => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("medi-user");
   const [showModal, setShowModal] = useState(false);
+  const [companyName, setCompanyName] = useState("");
+
+  useEffect(() => {
+  if (!companyId) return;
+
+  fetch(`/api/auth/companyName/${companyId}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch company name");
+      return res.json();
+    })
+    .then((data) => {
+      setCompanyName(data.companyName || "Unknown Company");
+    })
+    .catch((err) => {
+      console.error("Error fetching company name:", err);
+      setCompanyName("Unknown Company");
+    });
+}, [companyId]);
+
 
   const handleBooking = () => {
     const companyIdStr = companyId.toString();
@@ -47,7 +66,7 @@ const TestCard = ({ packageId, companyId, packageName, testCount, tests, bestPri
   return (
     <>
       <div
-        className="rounded-lg shadow-lg p-6 border w-80 h-[280px] flex flex-col justify-between hover:scale-105 transition-transform duration-300"
+        className="rounded-lg shadow-lg p-6 border w-80 h-[320px] flex flex-col justify-between hover:scale-105 transition-transform duration-300"
         style={{
           background: "linear-gradient(to right, #FAF0E6, #F5F5DC)",
           borderColor: "#F5F5DC",
@@ -57,8 +76,14 @@ const TestCard = ({ packageId, companyId, packageName, testCount, tests, bestPri
           {packageName}
         </h2>
 
+        <br />
+
+        <h3 className="text-lg font-semibold break-words" style={{ color: "red" }}>
+          {companyName}
+        </h3>
+
         <div
-          className="px-3 py-1 mt-10 rounded-md inline-block font-medium text-sm"
+          className="px-3 py-1 mt-8 rounded-md inline-block font-medium text-sm"
           style={{ backgroundColor: "#88C4E7", color: "#fff" }}
         >
           {testCount} Tests Included

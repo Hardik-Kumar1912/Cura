@@ -7,6 +7,7 @@ import CompanyPackageRoutes from "./routes/companyPackage.routes.js";
 import packageCategoryRoutes from "./routes/packageCategory.routes.js";
 import packageRoutes from "./routes/package.routes.js";
 import transactionRoutes from "./routes/transaction.routes.js";
+import companyNameRoutes from "./routes/companyuser.routes.js";
 import path from "path";
 import cors from "cors";
 
@@ -29,6 +30,7 @@ app.use("/api/auth/company-packages",CompanyPackageRoutes);
 app.use("/api/auth",packageCategoryRoutes);
 app.use("/api/auth/packages",packageRoutes);
 app.use("/api/auth", transactionRoutes);
+app.use("/api/auth/companyName", companyNameRoutes)
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 

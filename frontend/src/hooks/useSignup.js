@@ -53,21 +53,37 @@ const useSignup = () => {
 
 export default useSignup
 
-function handleInputErrors({fullName,phoneNumber,password,confirmPassword,pincode}){
-    
-    if(!fullName || !phoneNumber || !password || !confirmPassword || !pincode){
-        toast.error("Please fill all fields")
-        return false
+function handleInputErrors({ fullName, phoneNumber, password, confirmPassword, pincode }) {
+    if (!fullName || !phoneNumber || !password || !confirmPassword || !pincode) {
+        toast.error("Please fill all fields");
+        return false;
     }
 
-    if(password!==confirmPassword){
-        toast.error("Passwords do not match")
-        return false
+    if (!/^[a-zA-Z\s]{3,}$/.test(fullName)) {
+        toast.error("Full name must be at least 3 characters and contain only letters");
+        return false;
     }
 
-    if(password.length<4){
-        toast.error("Password must be of atleast 4 characters")
+    if (!/^\d{10}$/.test(phoneNumber)) {
+        toast.error("Phone number must be exactly 10 digits");
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        toast.error("Passwords do not match");
+        return false;
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password)) {
+        toast.error("Password must be at least 8 characters and include uppercase, lowercase, number, and special character");
+        return false;
+    }
+
+    if (!/^\d{6}$/.test(pincode)) {
+        toast.error("Pincode must be exactly 6 digits");
+        return false;
     }
 
     return true;
 }
+
